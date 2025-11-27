@@ -1,4 +1,5 @@
 import { headers } from 'next/headers'
+import { getBaseUrl } from '../utils/getBaseUrl'
 
 interface StructuredDataProps {
   pathname?: string
@@ -13,7 +14,7 @@ export async function StructuredData({
   description,
   type = 'WebPage'
 }: StructuredDataProps) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://faq.getmaxim.ai'
+  const baseUrl = getBaseUrl()
 
   // Get pathname from headers if not provided
   const headersList = await headers()

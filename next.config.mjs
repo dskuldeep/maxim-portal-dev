@@ -15,5 +15,11 @@ export default withNextra({
   output: 'export',
   images: {
     unoptimized: true
+  },
+  // Ensure proper static export
+  trailingSlash: false,
+  // Disable features that might cause issues in static export
+  experimental: {
+    optimizePackageImports: ['nextra-theme-docs']
   }
 })

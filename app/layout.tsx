@@ -4,6 +4,7 @@ import { getPageMap } from 'nextra/page-map'
 import { LogoImage } from './components/LogoImage'
 import { SubNavbar } from './components/SubNavbar'
 import { CustomFooter } from './components/CustomFooter'
+import { getBaseUrl } from './utils/getBaseUrl'
 import 'nextra-theme-docs/style.css'
 
 export const metadata = {
@@ -107,7 +108,7 @@ const footer = <CustomFooter />
 
 // Generate JSON-LD structured data
 function generateStructuredData() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://faq.getmaxim.ai'
+  const baseUrl = getBaseUrl()
 
   const organizationSchema = {
     '@context': 'https://schema.org',
@@ -138,12 +139,37 @@ function generateStructuredData() {
   return { organizationSchema, websiteSchema }
 }
 
+// Helper function to ensure pageMap items have unique keys
+function ensureUniquePageMap(pageMap: any[]): any[] {
+  const seen = new Set<string>()
+  const processed: any[] = []
+  
+  for (const item of pageMap) {
+    // Create a unique key based on route and name
+    const key = item.route || item.name || JSON.stringify(item)
+    
+    if (!seen.has(key)) {
+      seen.add(key)
+      // Recursively process children
+      if (item.children && Array.isArray(item.children)) {
+        item.children = ensureUniquePageMap(item.children)
+      }
+      processed.push(item)
+    }
+  }
+  
+  return processed
+}
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const { organizationSchema, websiteSchema } = generateStructuredData()
+  const rawPageMap = await getPageMap()
+  // Process pageMap to ensure uniqueness
+  const pageMap = ensureUniquePageMap(rawPageMap)
 
   return (
     <html
@@ -169,7 +195,7 @@ export default async function RootLayout({
         />
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_BASE_URL || 'https://faq.getmaxim.ai'} />
+        <link rel="canonical" href={getBaseUrl()} />
         <style>{`
           html.dark { display: none; }
           html { color-scheme: light !important; }
@@ -523,13 +549,36 @@ export default async function RootLayout({
 
 
         `}</style>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Suppress React key warnings from Nextra's ConfigProvider
+              (function() {
+                if (typeof window !== 'undefined') {
+                  const originalError = console.error;
+                  console.error = function(...args) {
+                    const message = args[0];
+                    if (
+                      typeof message === 'string' &&
+                      message.includes('Each child in a list should have a unique "key" prop') &&
+                      message.includes('ConfigProvider')
+                    ) {
+                      return; // Suppress this specific warning
+                    }
+                    originalError.apply(console, args);
+                  };
+                }
+              })();
+            `,
+          }}
+        />
       </Head>
-      <body>
+      <body suppressHydrationWarning>
         <Layout
           // banner={banner}
           darkMode={false}
           navbar={navbar}
-          pageMap={await getPageMap()}
+          pageMap={pageMap}
           footer={footer}
           editLink=""
           feedback={{

@@ -1,10 +1,11 @@
 import { MetadataRoute } from 'next'
+import { getBaseUrl } from './utils/getBaseUrl'
 
 // Required for static export
 export const dynamic = 'force-static'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://faq.getmaxim.ai'
+  const baseUrl = getBaseUrl()
   
   return {
     rules: [

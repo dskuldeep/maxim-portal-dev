@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { getPageMap } from 'nextra/page-map'
+import { getBaseUrl } from './utils/getBaseUrl'
 
 // Required for static export
 export const dynamic = 'force-static'
@@ -29,7 +30,7 @@ function extractRoutes(pageMap: any[], basePath: string = ''): string[] {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://faq.getmaxim.ai'
+  const baseUrl = getBaseUrl()
   
   // Get all pages from Nextra
   const pageMap = await getPageMap()
