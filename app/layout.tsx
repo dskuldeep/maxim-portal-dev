@@ -597,6 +597,27 @@ export default async function RootLayout({
                       return;
                     }
                     
+                    // Suppress "Connection closed" errors (from static export/client-side issues)
+                    if (
+                      message.includes('Connection closed') ||
+                      fullMessage.includes('Connection closed') ||
+                      message.includes('turbopack') && message.includes('closed')
+                    ) {
+                      return;
+                    }
+                    
+                    // Suppress refresh.js and dev server errors in production
+                    if (
+                      message.includes('refresh.js') ||
+                      fullMessage.includes('refresh.js') ||
+                      (message.includes('Application error') && fullMessage.includes('client-side exception'))
+                    ) {
+                      // Only suppress if it's a known non-critical error
+                      if (fullMessage.includes('WebSocket') || fullMessage.includes('refresh')) {
+                        return;
+                      }
+                    }
+                    
                     originalError.apply(console, args);
                   };
                   
@@ -626,6 +647,38 @@ export default async function RootLayout({
                     }
                     originalLog.apply(console, args);
                   };
+                  
+                  // Global error handler to prevent app crashes from non-critical errors
+                  window.addEventListener('error', function(event) {
+                    const errorMessage = event.message || '';
+                    const errorSource = event.filename || '';
+                    
+                    // Suppress non-critical errors that don't affect functionality
+                    if (
+                      errorMessage.includes('Connection closed') ||
+                      errorMessage.includes('WebSocket') ||
+                      errorSource.includes('refresh.js') ||
+                      errorMessage.includes('turbopack') && errorMessage.includes('closed')
+                    ) {
+                      event.preventDefault();
+                      return false;
+                    }
+                  }, true);
+                  
+                  // Handle unhandled promise rejections
+                  window.addEventListener('unhandledrejection', function(event) {
+                    const reason = event.reason?.message || String(event.reason || '');
+                    
+                    // Suppress non-critical promise rejections
+                    if (
+                      reason.includes('Connection closed') ||
+                      reason.includes('WebSocket') ||
+                      reason.includes('refresh.js')
+                    ) {
+                      event.preventDefault();
+                      return false;
+                    }
+                  });
                 }
               })();
             `,

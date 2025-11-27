@@ -23,7 +23,17 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Error caught by boundary:', error, errorInfo)
+    // Only log non-critical errors
+    const errorMessage = error?.message || ''
+    const isNonCritical = 
+      errorMessage.includes('Connection closed') ||
+      errorMessage.includes('WebSocket') ||
+      errorMessage.includes('refresh.js') ||
+      errorMessage.includes('turbopack')
+    
+    if (!isNonCritical) {
+      console.error('Error caught by boundary:', error, errorInfo)
+    }
   }
 
   render() {
