@@ -1,36 +1,198 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Maxim AI FAQ Portal
 
-## Getting Started
+A comprehensive FAQ portal for Maxim AI built with [Nextra](https://nextra.site/) - a powerful documentation framework based on Next.js.
 
-First, run the development server:
+## 🚀 Features
+
+- **Beautiful Documentation Theme** - Clean, modern design optimized for readability
+- **Full-Text Search** - Fast search powered by FlexSearch
+- **MDX Support** - Write content with Markdown and React components
+- **Responsive Design** - Works perfectly on desktop, tablet, and mobile
+- **Dark Mode** - Automatic theme switching support
+- **SEO Optimized** - Built-in meta tags and sitemap generation
+- **Type-Safe** - Built with TypeScript for better DX
+
+## 📁 Project Structure
+
+```
+/Users/kuldeeppaul/faq/
+├── app/
+│   ├── layout.tsx              # Root layout with Nextra theme
+│   ├── page.mdx                # Homepage
+│   ├── _meta.js                # Navigation structure
+│   ├── getting-started/        # Getting Started section
+│   │   ├── page.mdx
+│   │   ├── _meta.js
+│   │   ├── what-is-maxim-ai.mdx
+│   │   └── quick-start.mdx
+│   ├── products-features/      # Products & Features section
+│   ├── account-billing/        # Account & Billing section
+│   ├── technical-support/      # Technical Support section
+│   ├── security-privacy/       # Security & Privacy section
+│   └── api-integration/        # API & Integration section
+├── mdx-components.tsx          # Custom MDX components
+├── next.config.mjs             # Next.js + Nextra configuration
+└── package.json
+
+```
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+- Node.js 14.x or higher
+- npm or yarn or pnpm
+
+### Installation
+
+Dependencies are already installed. To reinstall:
+
+```bash
+npm install
+```
+
+### Development
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to see your FAQ portal.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## 📝 Adding New FAQ Content
 
-To learn more about Next.js, take a look at the following resources:
+### Create a New Category
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a new folder under `app/`: 
+   ```bash
+   mkdir app/new-category
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Add `page.mdx` for the category overview:
+   ```mdx
+   # New Category
+   
+   Overview content here...
+   ```
 
-## Deploy on Vercel
+3. Add `_meta.js` to define the structure:
+   ```js
+   export default {
+     'page': 'Overview',
+     'topic-1': 'Topic 1',
+     'topic-2': 'Topic 2'
+   }
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Update `app/_meta.js` to include the new category
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Create a New FAQ Page
+
+Simply create a new `.mdx` file:
+
+```mdx
+# Your FAQ Topic
+
+Your content here with full Markdown and React component support!
+
+import { Callout } from 'nextra/components'
+
+<Callout type="info">
+This is an info callout!
+</Callout>
+```
+
+## 🎨 Available Components
+
+Nextra provides built-in components you can use:
+
+- **Callout** - Highlighted notes (info, warning, error)
+- **Cards** - Card grids for navigation
+- **Steps** - Numbered step-by-step guides
+- **Tabs** - Tabbed content
+- **FileTree** - Display file structures
+- **Code Blocks** - Syntax highlighted code with copy button
+
+## 🔍 Search Configuration
+
+Search is powered by FlexSearch and configured in `next.config.mjs`:
+
+```js
+search: {
+  codeblocks: true,
+  placeholder: 'Search FAQ...'
+}
+```
+
+## 🎨 Customization
+
+### Update Branding
+
+Edit `app/layout.tsx` to customize:
+- Logo and navbar
+- Footer content
+- Banner messages
+- Theme colors
+
+### Add Custom Styling
+
+Nextra uses Tailwind CSS. You can add custom styles by:
+1. Creating a custom CSS file
+2. Importing it in your layout
+3. Using Tailwind utility classes in MDX
+
+## 📚 Documentation
+
+- [Nextra Documentation](https://nextra.site/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [MDX Documentation](https://mdxjs.com/)
+
+## 🚢 Deployment
+
+### Deploy to Vercel
+
+1. Push your code to GitHub
+2. Import project on [Vercel](https://vercel.com)
+3. Deploy with one click
+
+### Deploy to Other Platforms
+
+Build the static site:
+
+```bash
+npm run build
+```
+
+The output will be in the `.next` directory. You can deploy this to:
+- Netlify
+- AWS S3 + CloudFront
+- GitHub Pages (with static export)
+- Any Node.js hosting platform
+
+## 📄 License
+
+MIT © Maxim AI
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📧 Support
+
+For questions or issues:
+- Email: support@maxim-ai.com
+- GitHub Issues: [Create an issue](https://github.com/maxim-ai/faq)
+- Community: [Join our forum](https://community.maxim-ai.com)
+
+---
+
+Built with ❤️ using [Nextra](https://nextra.site/)
