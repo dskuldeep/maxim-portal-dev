@@ -187,6 +187,34 @@ export default async function RootLayout({
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Polyfill for incognito/private browsing mode
+              try {
+                if (typeof localStorage === 'undefined' || !localStorage) {
+                  window.localStorage = {
+                    getItem: function() { return null; },
+                    setItem: function() {},
+                    removeItem: function() {},
+                    clear: function() {}
+                  };
+                }
+                // Test if localStorage is actually accessible
+                localStorage.setItem('__test__', '1');
+                localStorage.removeItem('__test__');
+              } catch (e) {
+                // localStorage is blocked in incognito mode, provide fallback
+                window.localStorage = {
+                  getItem: function() { return null; },
+                  setItem: function() {},
+                  removeItem: function() {},
+                  clear: function() {}
+                };
+              }
+            `,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationSchema),
