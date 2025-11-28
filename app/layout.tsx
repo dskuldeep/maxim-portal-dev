@@ -189,29 +189,12 @@ export default async function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Critical error handler - shows errors on white screen
+              // Log critical errors to console
               window.addEventListener('error', function(e) {
-                var err = e.error || e.message || 'Unknown error';
-                console.error('CRITICAL ERROR:', err);
-                var fallback = document.getElementById('loading-fallback');
-                if (fallback) {
-                  fallback.innerHTML = '<div style="padding:20px;font-family:monospace;background:#fff;color:#000"><h1>Error Debug Info</h1><pre>' +
-                    'Error: ' + (err.message || err) + '\\n' +
-                    'File: ' + e.filename + '\\n' +
-                    'Line: ' + e.lineno + '\\n' +
-                    'Stack: ' + (err.stack || 'N/A') +
-                    '</pre><p>Check console for details</p><p>Device: ' + navigator.userAgent + '</p></div>';
+                console.error('ERROR:', e.message, 'at', e.filename + ':' + e.lineno);
+                if (e.error && e.error.stack) {
+                  console.error('Stack:', e.error.stack);
                 }
-              });
-
-              // Hide loading fallback when React renders
-              window.addEventListener('DOMContentLoaded', function() {
-                setTimeout(function() {
-                  var fallback = document.getElementById('loading-fallback');
-                  if (fallback && document.querySelector('[data-pagefind-body]')) {
-                    fallback.style.display = 'none';
-                  }
-                }, 1000);
               });
 
               // Polyfill for incognito/private browsing mode
@@ -613,26 +596,6 @@ export default async function RootLayout({
         `}</style>
       </Head>
       <body suppressHydrationWarning>
-        {/* Loading indicator for slow connections */}
-        <div id="loading-fallback" style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: '#fff',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999,
-          fontFamily: 'system-ui, sans-serif',
-        }}>
-          <div style={{ textAlign: 'center' }}>
-            <h2>Loading Maxim AI Resources...</h2>
-            <p>If this message persists, check browser console for errors</p>
-          </div>
-        </div>
-
         <noscript>
           <div style={{
             padding: '2rem',
