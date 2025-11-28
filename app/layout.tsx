@@ -612,6 +612,16 @@ export default async function RootLayout({
         `}</style>
       </Head>
       <body>
+        <div id="react-test-marker" style={{position: 'fixed', bottom: 0, right: 0, background: 'lime', padding: '10px', zIndex: 999999}}>
+          ✓ React Rendered
+        </div>
+        <script dangerouslySetInnerHTML={{__html: `
+          setTimeout(function() {
+            if (!document.getElementById('react-test-marker')) {
+              document.body.innerHTML = '<div style="padding:40px;font-family:Arial"><h1 style="color:red">REACT DID NOT RENDER</h1><p>The React app failed to hydrate/render. Check console for errors.</p></div>';
+            }
+          }, 3000);
+        `}} />
         <noscript>
           <div style={{
             padding: '2rem',
