@@ -4,7 +4,7 @@ import { getPageMap } from 'nextra/page-map'
 import { LogoImage } from './components/LogoImage'
 import { SubNavbar } from './components/SubNavbar'
 import { CustomFooter } from './components/CustomFooter'
-import { ErrorDisplay } from './components/ErrorDisplay'
+
 import { getBaseUrl } from './utils/getBaseUrl'
 import 'nextra-theme-docs/style.css'
 
@@ -144,11 +144,11 @@ function generateStructuredData() {
 function ensureUniquePageMap(pageMap: any[]): any[] {
   const seen = new Set<string>()
   const processed: any[] = []
-  
+
   for (const item of pageMap) {
     // Create a unique key based on route and name
     const key = item.route || item.name || JSON.stringify(item)
-    
+
     if (!seen.has(key)) {
       seen.add(key)
       // Recursively process children
@@ -158,7 +158,7 @@ function ensureUniquePageMap(pageMap: any[]): any[] {
       processed.push(item)
     }
   }
-  
+
   return processed
 }
 
@@ -185,63 +185,7 @@ export default async function RootLayout({
     >
       <Head>
         <link rel="icon" href="/favicon.ico" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              // SHOW ALL ERRORS - NO SUPPRESSION
-              window.addEventListener('error', function(e) {
-                console.error('=== CRITICAL ERROR ===');
-                console.error('Message:', e.message);
-                console.error('File:', e.filename);
-                console.error('Line:', e.lineno + ':' + e.colno);
-                if (e.error && e.error.stack) {
-                  console.error('Stack:', e.error.stack);
-                }
-                console.error('=====================');
 
-                // Show error on screen
-                var errorDiv = document.createElement('div');
-                errorDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#f00;color:#fff;padding:20px;z-index:999999;font-family:monospace;font-size:14px;';
-                errorDiv.innerHTML = '<strong>ERROR:</strong> ' + e.message + '<br>File: ' + e.filename + ':' + e.lineno;
-                document.body.appendChild(errorDiv);
-              });
-
-              // Catch React errors
-              window.addEventListener('unhandledrejection', function(e) {
-                console.error('=== UNHANDLED PROMISE REJECTION ===');
-                console.error('Reason:', e.reason);
-                console.error('===================================');
-              });
-
-              // Polyfill for incognito/private browsing mode
-              try {
-                if (typeof localStorage === 'undefined' || !localStorage) {
-                  window.localStorage = {
-                    getItem: function() { return null; },
-                    setItem: function() {},
-                    removeItem: function() {},
-                    clear: function() {},
-                    length: 0,
-                    key: function() { return null; }
-                  };
-                }
-                // Test if localStorage is actually accessible
-                localStorage.setItem('__test__', '1');
-                localStorage.removeItem('__test__');
-              } catch (e) {
-                console.warn('localStorage blocked, using fallback');
-                window.localStorage = {
-                  getItem: function() { return null; },
-                  setItem: function() {},
-                  removeItem: function() {},
-                  clear: function() {},
-                  length: 0,
-                  key: function() { return null; }
-                };
-              }
-            `,
-          }}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -258,7 +202,7 @@ export default async function RootLayout({
         <meta name="googlebot" content="index, follow" />
         <link rel="canonical" href={getBaseUrl()} />
         <style>{`
-          html.dark { display: none; }
+          html.dark { color-scheme: light !important; }
           html { color-scheme: light !important; }
           button[aria-label*="theme" i],
           button[title*="theme" i],
@@ -612,16 +556,7 @@ export default async function RootLayout({
         `}</style>
       </Head>
       <body>
-        <div id="react-test-marker" style={{position: 'fixed', bottom: 0, right: 0, background: 'lime', padding: '10px', zIndex: 999999}}>
-          ✓ React Rendered
-        </div>
-        <script dangerouslySetInnerHTML={{__html: `
-          setTimeout(function() {
-            if (!document.getElementById('react-test-marker')) {
-              document.body.innerHTML = '<div style="padding:40px;font-family:Arial"><h1 style="color:red">REACT DID NOT RENDER</h1><p>The React app failed to hydrate/render. Check console for errors.</p></div>';
-            }
-          }, 3000);
-        `}} />
+
         <noscript>
           <div style={{
             padding: '2rem',
@@ -657,7 +592,7 @@ export default async function RootLayout({
         >
           {children}
         </Layout>
-        <ErrorDisplay />
+
       </body>
     </html>
   )

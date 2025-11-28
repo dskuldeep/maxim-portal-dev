@@ -1,0 +1,52 @@
+diff --git a/node_modules/nextra-theme-docs/dist/components/sidebar.js b/node_modules/nextra-theme-docs/dist/components/sidebar.js
+index b6e7d77..fc88c6b 100644
+--- a/node_modules/nextra-theme-docs/dist/components/sidebar.js
++++ b/node_modules/nextra-theme-docs/dist/components/sidebar.js
+@@ -557,7 +557,7 @@ const Sidebar = () => {
+     t11 = hasMenu && /* @__PURE__ */ jsxs("div", { className: cn("x:sticky x:bottom-0 x:bg-nextra-bg", classes.footer, !isExpanded && "x:flex-wrap x:justify-center", showToggleAnimation && ["x:*:opacity-0", isExpanded ? "x:*:animate-[fade-in_1s_ease_.2s_forwards]" : "x:*:animate-[fade-in2_1s_ease_.2s_forwards]"]), children: [
+       /* @__PURE__ */ jsx(LocaleSwitch, { lite: !isExpanded, className: isExpanded ? "x:grow" : "" }),
+       /* @__PURE__ */ jsx(ThemeSwitch, { lite: !isExpanded || hasI18n, className: !isExpanded || hasI18n ? "" : "x:grow" }),
+-      themeConfig.sidebar.toggleButton && /* @__PURE__ */ jsx(Button, { "aria-expanded": isExpanded, "aria-controls": sidebarControlsId, title: isExpanded ? "Collapse sidebar" : "Expand sidebar", className: _temp4, onClick: () => {
++      themeConfig.sidebar.toggleButton && /* @__PURE__ */ jsx(Button, { suppressHydrationWarning: true, "aria-expanded": isExpanded, "aria-controls": sidebarControlsId, title: isExpanded ? "Collapse sidebar" : "Expand sidebar", className: _temp4, onClick: () => {
+         setIsExpanded(_temp5);
+         setToggleAnimation(true);
+       }, children: /* @__PURE__ */ jsx(ExpandIcon, { height: "12", className: cn(!isExpanded && "x:*:first:origin-[35%] x:*:first:rotate-180") }) })
+@@ -574,7 +574,7 @@ const Sidebar = () => {
+   }
+   let t12;
+   if ($[28] !== sidebarControlsId || $[29] !== t10 || $[30] !== t11 || $[31] !== t6) {
+-    t12 = /* @__PURE__ */ jsxs("aside", { id: sidebarControlsId, className: t6, children: [
++    t12 = /* @__PURE__ */ jsxs("aside", { suppressHydrationWarning: true, id: sidebarControlsId, className: t6, children: [
+       t10,
+       t11
+     ] });
+diff --git a/node_modules/nextra-theme-docs/dist/stores/config.js b/node_modules/nextra-theme-docs/dist/stores/config.js
+index a8bade1..671c687 100644
+--- a/node_modules/nextra-theme-docs/dist/stores/config.js
++++ b/node_modules/nextra-theme-docs/dist/stores/config.js
+@@ -1,9 +1,9 @@
+ "use client";
+-import { jsxs } from "react/jsx-runtime";
++import { jsxs, jsx } from "react/jsx-runtime";
+ import { c as _c } from "react-compiler-runtime";
+ import { useFSRoute } from "nextra/hooks";
+ import { normalizePages } from "nextra/normalize-pages";
+-import { createContext, useContext } from "react";
++import { createContext, useContext, Fragment } from "react";
+ const ConfigContext = createContext(null);
+ function useConfig() {
+   const $ = _c(3);
+@@ -59,11 +59,11 @@ const ConfigProvider = (t0) => {
+   const t3 = activeThemeContext.footer && footer;
+   let t4;
+   if ($[3] !== children || $[4] !== normalizedPages || $[5] !== t2 || $[6] !== t3) {
+-    t4 = /* @__PURE__ */ jsxs(ConfigContext.Provider, { value: normalizedPages, children: [
++    t4 = /* @__PURE__ */ jsx(ConfigContext.Provider, { value: normalizedPages, children: /* @__PURE__ */ jsxs(Fragment, { children: [
+       t2,
+       children,
+       t3
+-    ] });
++    ] }) });
+     $[3] = children;
+     $[4] = normalizedPages;
+     $[5] = t2;

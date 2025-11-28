@@ -1,0 +1,26 @@
+diff --git a/node_modules/nextra/dist/client/components/search.js b/node_modules/nextra/dist/client/components/search.js
+index a2858bb..89df864 100644
+--- a/node_modules/nextra/dist/client/components/search.js
++++ b/node_modules/nextra/dist/client/components/search.js
+@@ -249,7 +249,7 @@ const Search = (t0) => {
+   }
+   let t18;
+   if ($[31] !== handleChange || $[32] !== placeholder || $[33] !== props || $[34] !== search) {
+-    t18 = /* @__PURE__ */ jsx(ComboboxInput, { spellCheck: false, autoComplete: "off", type: "search", ...props, ref: inputRef, className: _temp4, onChange: handleChange, onFocus: handleFocus, onBlur: handleFocus, value: search, placeholder });
++    t18 = /* @__PURE__ */ jsx(ComboboxInput, { suppressHydrationWarning: true, spellCheck: false, autoComplete: "off", type: "search", ...props, ref: inputRef, className: _temp4, onChange: handleChange, onFocus: handleFocus, onBlur: handleFocus, value: search, placeholder });
+     $[31] = handleChange;
+     $[32] = placeholder;
+     $[33] = props;
+diff --git a/node_modules/nextra/dist/client/components/select.js b/node_modules/nextra/dist/client/components/select.js
+index 0417451..a8cc9b8 100644
+--- a/node_modules/nextra/dist/client/components/select.js
++++ b/node_modules/nextra/dist/client/components/select.js
+@@ -45,7 +45,7 @@ const Select = (t0) => {
+   }
+   let t4;
+   if ($[4] !== selectedOption || $[5] !== t3 || $[6] !== title) {
+-    t4 = /* @__PURE__ */ jsx(ListboxButton, { title, className: t3, children: selectedOption });
++    t4 = /* @__PURE__ */ jsx(ListboxButton, { suppressHydrationWarning: true, title, className: t3, children: selectedOption });
+     $[4] = selectedOption;
+     $[5] = t3;
+     $[6] = title;

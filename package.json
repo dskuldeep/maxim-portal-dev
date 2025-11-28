@@ -7,7 +7,8 @@
     "build": "next build --webpack && npx pagefind --site out --output-subdir _pagefind",
     "start": "next start",
     "lint": "eslint",
-    "serve": "npx serve out"
+    "serve": "npx serve out",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "flexsearch": "^0.8.212",
