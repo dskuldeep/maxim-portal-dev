@@ -570,6 +570,10 @@ export default async function RootLayout({
         <Layout
           // banner={banner}
           darkMode={false}
+          nextThemes={{
+            forcedTheme: 'light',
+            defaultTheme: 'light'
+          }}
           navbar={navbar}
           pageMap={pageMap}
           footer={footer}
